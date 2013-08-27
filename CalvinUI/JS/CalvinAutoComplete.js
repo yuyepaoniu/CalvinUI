@@ -299,7 +299,7 @@
         MenuHideAuto: true
     };
     $.fn.CalvinAutoComplete = function (options, param) {
-        return this.each(function () {
+    return this.each(function () {
             var opts = {};
             var $this = $(this);
             var state = $.data(this, 'CalvinAutoComplete.data');
