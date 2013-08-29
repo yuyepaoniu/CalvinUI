@@ -17,8 +17,6 @@
         proxy: null,
         revert: false,
         cursor: 'move',
-        deltaX: null,
-        deltaY: null,
         //handle代表对象拖拉的 手柄的区域 比如有个panel可以设置它的handle为header部位
         handle: null,
         disabled: false,
@@ -32,7 +30,36 @@
         onStopDrag: function (e) { }
     };
 
+    function createProxy(e) {
+        var target = $(e.data.target),
+                offset = target.offset(),
+                zIndex = target.css('zIndex');
 
+        // 代理元素的zIndex值始终比拖拽元素的zIndex高
+        if (!zIndex) {
+            target.css('zIndex', '1');
+            zIndex = '2';
+        }
+        else {
+            zIndex = parseInt(zIndex) + 1;
+        }
+        var proxy = $.data(e.data.target, 'draggable').proxy;
+        if (!proxy) {
+            proxy = $('<div class="eui_drag_proxy" style="position:absolute;' +
+                    'border:1px dashed #a0a1a2;"/>');
+        }
+
+        proxy.css({
+            top: offset.top + 'px',
+            left: offset.left + 'px',
+            cursor: 'move',
+            width: target.width() - 4 + 'px',
+            height: target.height() - 4 + 'px',
+            zIndex: zIndex
+        });
+
+        return proxy;
+    }
     var Boundary = {
         getContainerBoundary: function (container) {
             var isWindow = (container == null || container == window || container == document || !container.tagName || (/^(?:body|html)$/i).test(container.tagName));
@@ -98,24 +125,25 @@
             var proxy = $.data(e.data.target, 'draggable').proxy;
             if (!proxy) {
                 if (opts.proxy) {
-                    if (opts.proxy == 'clone') {
-                        proxy = $(e.data.target).clone().insertAfter(e.data.target);
-                    }
-                    else {
-                        proxy = opts.proxy.call(e.data.target, e.data.target);
-                    }
-                  
-                    $.data(e.data.target, 'draggable').proxy = proxy;
+//                    if (opts.proxy == 'clone') {
+//                        proxy = $(e.data.target).clone().insertAfter(e.data.target);
+//                    }
+//                    else {
+//                        proxy = opts.proxy.call(e.data.target, e.data.target);
+//                    }
+
+                  $.data(e.data.target, 'draggable').proxy = createProxy(e).appendTo(document.body);
+//                    //proxy.css('position', 'absolute');
                 }
                 else {
                     proxy = $(e.data.target);
                 }
             }
 
-            proxy.css('position', 'absolute');
 
-            eventHelper.drag(e);
-            eventHelper.applyDrag(e);
+
+            //eventHelper.onDrag(e);
+            //eventHelper.applyDrag(e);
 
             opts.onStartDrag.call(e.data.target, e);
             return false;
@@ -202,7 +230,7 @@
             }
             else {
                 $(e.data.target).css({
-                    position: 'absolute',
+                    //position: 'absolute',
                     left: e.data.left,
                     top: e.data.top
                 });
@@ -271,13 +299,7 @@
             var dragData = e.data;
             var left = dragData.startLeft + e.pageX - dragData.startX;
             var top = dragData.startTop + e.pageY - dragData.startY;
-
-            if (opts.deltaX != null && opts.deltaX != undefined) {
-                left = e.pageX + opts.deltaX;
-            }
-            if (opts.deltaY != null && opts.deltaY != undefined) {
-                top = e.pageY + opts.deltaY;
-            }
+            //console.log(left);
             //如果父元素不是body就加上滚动条
             if (e.data.parent != document.body) {
                 if ($.boxModel == true) {
@@ -305,9 +327,6 @@
             var opts = data.options;
             var containment = opts.containment;
             var dragData = e.data;
-            var target = dragData.target;
-            var targetHeight = $(target).outerHeight();
-            var targetWidth = $(target).outerWidth();
             var ConstrainArea = dragData.ConstrainArea;
             var elementArea = dragData.targetArea;
 
@@ -333,6 +352,7 @@
 
             dragData.left = dragData.startLeft + moveX;
             dragData.top = dragData.startTop + moveY;
+            console.log(moveX);
 
 
         }
@@ -370,6 +390,11 @@
                 options: opts,
                 handle: handle
             });
+            var positiontype = $this.css("position")
+            if (positiontype == "" || positiontype == "static") {
+                $this.css({ "position": "relative", "top": 0, "left": 0 });
+            }
+
 
             // bind mouse event using event namespace draggable
             handle.bind('mousedown.draggable', { target: this }, onMouseDown);
@@ -380,9 +405,9 @@
                 var $target = $(e.data.target);
                 var position = $target.position();
                 var data = {
-                    startPosition: $target.css('position'),
-                    startLeft: position.left,
-                    startTop: position.top,
+                    startPosition: position,
+                    startLeft: parseFloat( $target.css("left")),
+                    startTop: parseFloat($target.css("top")),
                     left: position.left,
                     top: position.top,
                     startX: e.pageX,
