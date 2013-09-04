@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../asset/css/style.css" rel="stylesheet" type="text/css" />
+    <script src="../CalvinUI/JS/jquery.min.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/CalvinUI.Core.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/CalvinDraggable.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/CalvinDroppable.js" type="text/javascript"></script>
+    <script src="../asset/prettyCode/prettify.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+
+            $("#Div1").CalvinDraggable({ proxy: true });
+            $("#Div2").CalvinDraggable();
+            $("#Div3").CalvinDroppable({ accept: "#Div1",
+                onDragEnter: function (e, o) {
+                    console.log(o.id + "进入</br>");
+
+
+                },
+                onDragLeave: function (e, o) {
+                    console.log(o.id + "离开");
+
+                }
+            });
+        });
+    
+    </script>
+</head>
+<body onload="prettyPrint();">
+    <div id="wrapper">
+        <div id="header">
+            <h2>
+                CalvinUI</h2>
+        </div>
+        <div id="content">
+            <div class="caption">
+                <h2>
+                    Drop(拖放)</h2>
+            </div>
+            <dl class="deps">
+                <dt>依赖</dt>
+                <dd>
+                    脚本文件:CalvinDraggable.js</dd>
+                <dd>
+                    脚本文件:CalvinDroppable.js</dd>
+            </dl>
+            <div class="params_box">
+                <h5>
+                    参数</h5>
+                <ul class="params_list">
+                    <li>
+                        <dl>
+                            <dt>options</dt>
+                            <dd>
+                                Object</dd>
+                        </dl>
+                        <div class="params_desc">
+                            <span class="type optional">可选</span>
+                            <p>
+                                多选形式的可配置参数。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="article_box">
+                <p>
+                    以下是option参数的说明</p>
+            </div>
+            <table class="props_tb">
+                <colgroup>
+                    <col style="width: 130px" />
+                    <col style="width: 100px" />
+                    <col style="width: 70px" />
+                    <col style="width: 370px" />
+                </colgroup>
+                <thead>
+                    <tr class="even">
+                        <th>
+                            参数
+                        </th>
+                        <th>
+                            数据类型
+                        </th>
+                        <th>
+                            默认值
+                        </th>
+                        <th>
+                            说明
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <b class="name">onDragEnter</b>
+                        </td>
+                        <td>
+                            <span class="type">Function</span>
+                        </td>
+                        <td>
+                            <span class="normal">null</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                刚进入拖放对象时候触发的方法</p>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td>
+                            <b class="name">onDragOver</b>
+                        </td>
+                        <td>
+                            <span class="type">Function</span>
+                        </td>
+                        <td>
+                            <span class="normal">null</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                在拖放对象上触发的方法</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b class="name">onDragLeave</b>
+                        </td>
+                        <td>
+                            <span class="type">Function</span>
+                        </td>
+                        <td>
+                            <span class="normal">null</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                离开拖放对象时候触发的方法</p>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td>
+                            <b class="name">onDrop</b>
+                        </td>
+                        <td>
+                            <span class="type">Function</span>
+                        </td>
+                        <td>
+                            null
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                拖拉的对象在拖放的容器内松开鼠标时候触发</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b class="name">accept</b>
+                        </td>
+                        <td>
+                            <span class="type">String</span>
+                        </td>
+                        <td>
+                            <span class="normal">null</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                接收拖放的的元素的选择器用逗号隔开,比如#div1,#div2</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class='example_box'>
+                <h2>
+                    实例1</h2>
+                <p>
+                    Div1和Div2是拖拉的对象,Div3是拖放的容器只接受Div1</p>
+                <pre class="prettyprint lang-html linenums">
+&lt;script type="text/javascript"&gt;
+            $("#Div1").CalvinDraggable();
+            $("#Div2").CalvinDraggable();
+            $("#Div3").CalvinDroppable({
+                accept: "#Div1",
+                onDragEnter: function (e, o) {
+                    console.log(o.id + "进入");
+                },
+                onDragLeave: function (e, o) {
+                    console.log(o.id + "离开");
+                }
+            });
+ &lt;/script&gt;
+</pre>
+                <div id="divmsg">
+                </div>
+                <div style="background: #028fc4; height: 60px; width: 60px;" id="Div2">
+                </div>
+                <div style="background: #028f11; height: 60px; width: 60px;" id="Div1">
+                </div>
+                <div style="background: #021a11; height: 200px; width: 200px;" id="Div3">
+                </div>
+            </div>
+        </div>
+        <div id="mainNav">
+            <ul class="menu">
+                <li><a href="../index.htm">CalvinUI简介</a></li>
+                <li><a href="Accordion.htm" target="_self">Accordion(手风琴菜单)</a></li>
+                <li><a href="autoComplete.htm" target="_self">AutoComplete(自动补全)</a></li>
+                <li><a href="drag.htm" target="_self">Drag(拖拉)</a></li>
+                <li class="current"><a href="drop.htm" target="_self">Drop(拖放)</a></li>
+                <li><a href="sortable.htm" target="_self">Sortable(排序)</a></li>
+                <li><a href="multiUploder.htm" target="_self">multiuploader(多文件上传(beta))</a></li>
+                <li><a href="lazyload.htm" target="_self">lazyload(懒加载)</a></li>
+                <li><a href="imagelazyload.htm" target="_self">imagelazyload(图片延迟加载)</a></li>
+            </ul>
+        </div>
+        <div id="footer">
+            <p>
+                copyright © 2013 CalvinUI</p>
+        </div>
+    </div>
+</body>
+</html>
