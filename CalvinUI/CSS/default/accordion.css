@@ -1,27 +1,57 @@
-.accordion{
-	background:#fff;
-	overflow:hidden;
+﻿@charset "UTF-8";
+
+
+.Accordion {
+	border-left: solid 1px gray;
+	border-right: solid 1px black;
+	border-bottom: solid 1px gray;
+	overflow: hidden;
+	height: 100%;
 }
-.accordion .accordion-header{
-	/*background:#E0ECFF;
-	border-top-width:0;*/
-	cursor:pointer;
+
+.AccordionPanel {
+	margin: 0px;
+	padding: 0px;
 }
-.accordion .accordion-header .panel-title{
-	font-weight:normal;
+
+.AccordionPanelTab {
+	background-color: #CCCCCC;
+	border-top: solid 1px black;
+	border-bottom: solid 1px gray;
+	margin: 0px;
+	padding: 2px;
+	cursor: pointer;
+	-moz-user-select: none;
+	-khtml-user-select: none;
 }
-.accordion .accordion-header-selected .panel-title{
-	font-weight:bold;
+
+
+.AccordionPanelContent {
+	overflow: auto;
+	margin: 0px;
+	padding: 0px;
+	height: 200px;
 }
-.accordion-noborder .accordion-header{
-	/*border-width:0 0 1px;*/
+
+
+.AccordionPanelOpen .AccordionPanelTab {
+	background-color: #EEEEEE;
 }
-.accordion-noborder .accordion-body{
-	border-width:0px;
+
+
+.AccordionPanelTabHover {
+	color: #555555;
 }
-.accordion-collapse{
-	background:url('images/accordion_collapse.png') no-repeat;
+.AccordionPanelOpen .AccordionPanelTabHover {
+	color: #555555;
 }
-.accordion-expand{
-	background:url('images/accordion_expand.png') no-repeat;
+
+
+.AccordionFocused .AccordionPanelTab {
+	background-color: #3399FF;
+}
+
+
+.AccordionFocused .AccordionPanelOpen .AccordionPanelTab {
+	background-color: #33CCFF;
 }

@@ -59,6 +59,8 @@
                 <dt>依赖</dt>
                 <dd>
                     脚本文件:CalvinAutoComplete.js</dd>
+                <dd>
+                    样式文件:autoComplete.css</dd>
             </dl>
             <div class="params_box">
                 <h5>
@@ -138,6 +140,36 @@
                     </tr>
                     <tr>
                         <td>
+                            <b class="name">AutoInput</b>
+                        </td>
+                        <td>
+                            <span class="type">Boolean</span>
+                        </td>
+                        <td>
+                            <span class="normal">true</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                是否自动把点击的选项填到文件框</p>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td>
+                            <b class="name">MenuHideAuto</b>
+                        </td>
+                        <td>
+                            <span class="type">Boolean</span>
+                        </td>
+                        <td>
+                            <span class="normal">true</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                点击选项后下拉菜单自动消失</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <b class="name">dynamicSource</b>
                         </td>
                         <td>
@@ -159,14 +191,14 @@
                             <span class="type">Object</span>
                         </td>
                         <td>
-                            <span class="normal">:$.ajaxSettings</span>
+                            <span class="normal">$.ajaxSettings</span>
                         </td>
                         <td class="t_l">
                             <p>
                                 ajax请求参数配置</p>
                         </td>
                     </tr>
-                     <tr>
+                    <tr>
                         <td>
                             <b class="name">selected</b>
                         </td>
@@ -178,7 +210,23 @@
                         </td>
                         <td class="t_l">
                             <p>
-                               2个参数(event,ui),第一个参数是点击事件,第二个参数是点击的项,具有text,value属性 </p>
+                                2个参数(event,ui),第一个参数是点击事件,第二个参数是点击的项,具有text,value属性
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="even">
+                        <td>
+                            <b class="name">styleInfo</b>
+                        </td>
+                        <td>
+                            <span class="type">json</span>
+                        </td>
+                        <td>
+                            <span class="normal">null</span>
+                        </td>
+                        <td class="t_l">
+                            <p>
+                                下拉菜单的样式</p>
                         </td>
                     </tr>
                 </tbody>
@@ -259,14 +307,14 @@
         </div>
         <div id="mainNav">
             <ul class="menu">
-                <li><a  href="../index.htm">CalvinUI简介</a></li>
+                <li><a href="../index.htm">CalvinUI简介</a></li>
                 <li><a href="Accordion.htm" target="_self">Accordion(手风琴菜单)</a></li>
-                <li  class="current"><a href="autoComplete.htm" target="_self">AutoComplete(自动补全)</a></li>
+                <li class="current"><a href="autoComplete.htm" target="_self">AutoComplete(自动补全)</a></li>
                 <li><a href="drag.htm" target="_self">Drag(拖拉)</a></li>
                 <li><a href="drop.htm" target="_self">Drop(拖放)</a></li>
                 <li><a href="sortable.htm" target="_self">Sortable(排序)</a></li>
                 <li><a href="multiUploder.htm" target="_self">multiuploader(多文件上传(beta))</a></li>
-                  <li><a href="lazyload.htm" target="_self">lazyload(懒加载)</a></li>
+                <li><a href="lazyload.htm" target="_self">lazyload(懒加载)</a></li>
                 <li><a href="imagelazyload.htm" target="_self">imagelazyload(图片延迟加载)</a></li>
             </ul>
         </div>
