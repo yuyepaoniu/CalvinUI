@@ -13,9 +13,7 @@ blockquote, q { quotes: "" ""; }
 /*h */
 h2 { font-size: 17.5px; }
 /*text*/
-.text-warning {
-  color: #c09853 !important;
-}
+.text-warning { color: #c09853 !important; }
 
 
 /*layout*/
@@ -64,6 +62,7 @@ body { font: 14px/24px 'microsoft yahei'; }
 /*普通文章*/
 .article_box { margin: 30px; }
 .article_box p { padding-bottom: 20px; }
+.article_box h3 { font-size: 22px; font-weight: 400; font-family: arial; line-height: 30px; margin-bottom: 10px; color: #000; border-bottom: 1px dotted #999; display: inline-block; }
 /*参数列表*/
 .params_box { margin-bottom: 30px; }
 .params_box h5, .returns_box h5, .example_box h5 { line-height: 30px; }
