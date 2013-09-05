@@ -25,6 +25,7 @@
             selected: function (event, item) { },
             dynamicSource: false,
             ajaxOption: $.ajaxSettings,
+            styleInfo:null,
             AutoInput: true,
             MenuHideAuto: true
         };
@@ -39,11 +40,10 @@
                 var $textBox = $(textBox),
 				offset = $textBox.offset(),
 				opts = $.data(textBox, 'CalvinAutoComplete.data').options,
-				styleInfo;
-                if (!opts.dynamicStyle) {
-                    if (styleInfo = $textBox.data("styleInfo")) {
-                        return styleInfo
-                    }
+				styleInfo = $textBox.data("styleInfo");
+                if (!opts.dynamicStyle && styleInfo) {
+                    return styleInfo
+
                 }
                 styleInfo = {
                     left: offset.left,
