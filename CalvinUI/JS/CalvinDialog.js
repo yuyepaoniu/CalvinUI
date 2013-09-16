@@ -31,6 +31,7 @@ calvin.Create("calvin.ui", function () {
             opacity: 50
         },
         dialogCSS: {},
+        messageCSS: {},
         dragable: false
     };
     this.dialog = calvin.Class({
@@ -84,45 +85,47 @@ calvin.Create("calvin.ui", function () {
             }
         },
         wrapDialog: function (elem) {
-            var dialogData = $.data(elem, "calvindialog"), id = new Date().getTime()
-
-            var opts = dialogData.options, $dialog = $("<div id='calvinDialog" + id + "' class='calvinDialog' style='display:block;position:" + (dialogData.full ? 'fixed' : 'absolute') + ";z-index:" + (opts.zIndex + 2) + ";margin: 0px;'></div>"),
-        dialogContent = $('<div class="Dialog_content"></div>');
+            var dialogData = $.data(elem, "calvindialog"),
+            id = new Date().getTime(),
+            opts = dialogData.options,
+            $dialog = $("<div id='calvinDialog" + id + "' class='calvinDialog' style='display:block;position:" + (dialogData.full ? 'fixed' : 'absolute') + ";z-index:" + (opts.zIndex + 2) + ";margin: 0px;'></div>"),
+            dialogContent = $('<div class="Dialog_content"></div>'),
+            message = opts.message;
             $(elem).append($dialog);
             $dialog.append(dialogContent);
-            var message = opts.message;
-            if (!!message && message.nodeType && message.nodeName) {
-                dialogContent.append(message);
-                $(message).show();
+            $dialog.css(opts.dialogCSS);
+            if (opts.showTitle) {
+                var dialogTitle = $('<div class="Dialog_title" id=\"Dialog_title' + id + '" style="cursor: move;"><h4 style="float:left;display:inline-block;margin:0;">' + opts.title + '</h4></div>');
+                if (opts.showClose) {
+                    var closeBtn = $('<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="calvinCloseBtn' + id + '">×</a>');
+                    closeBtn.click(function () {
+                        DialogHelper.close(elem);
+                    });
+                    dialogTitle.prepend(closeBtn);
 
-            }
-            else {
-                if (opts.showTitle) {
-                    var dialogTitle = $('<div class="Dialog_title" id=\"Dialog_title' + id + '" style="cursor: move;"><h4 style="float:left;display:inline-block;margin:0;">' + opts.title + '</h4></div>');
-                    if (opts.showClose) {
-                        var closeBtn = $('<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="calvinCloseBtn' + id + '">×</a>');
-                        closeBtn.click(function () {
-                            DialogHelper.close(elem);
-                        });
-                        dialogTitle.prepend(closeBtn);
-
-                    }
-
-                    dialogContent.append(dialogTitle);
-                    if (opts.dragable) {
-                        new calvin.ui.cavindrag($dialog[0], { containment: elem, handle: "div.Dialog_title" });
-                    }
-                    dialogContent.append("<div class='line'/>");
                 }
 
-                var dialogMessage = $('<div class="Dialog_message">' + opts.message + '</div>').width($dialog.width() - 35);
+                dialogContent.append(dialogTitle);
+                if (opts.dragable) {
+                    new calvin.ui.cavindrag($dialog[0], { containment: elem, handle: "div.Dialog_title" });
+                }
+                dialogContent.append("<div class='line'/>");
+            }
+            //if (!!message && message.nodeType && message.nodeName) {
+            //    //dialogContent.append(message);
+            //    $(message).show();
+
+            //}
+            //else {
+                var dialogMessage = $('<div class="Dialog_message"></div>').append(message).width($dialog.width() - 35);
                 dialogContent.append(dialogMessage);
-                if (opts.showFooter) {
-                    dialogContent.append("<div class='line'/>");
-                    var dialogFooter = $('<div class="Dialog_footer">' + opts.footer + '</div>');
-                    dialogContent.append(dialogFooter);
-                }
+           // }
+            if (opts.showFooter) {
+                dialogContent.append("<div class='line'/>");
+                var dialogFooter = $('<div class="Dialog_footer">' + opts.footer + '</div>');
+                dialogContent.append(dialogFooter);
             }
+
             dialogData.$dialog = $dialog;
 
         },
