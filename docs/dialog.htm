@@ -13,7 +13,8 @@
     <script type="text/javascript">
         $(function () {
             var tt = new calvin.ui.dialog(document.getElementById("ElementContainerDialog"), { dragable: true, message: "中间内容", title: "头部", footer: "底部", zIndex: 10002 });
-            var tt11 = new calvin.ui.dialog(window, { dragable: true, message: document.getElementById("message"), zIndex: 10002 });
+            var tt11 = new calvin.ui.dialog(window, { dialogCSS: { width: 100 }, dragable: true, message: document.getElementById("message"), zIndex: 10002 });
+            var tt12 = new calvin.ui.dialog(window, { dialogCSS: { width: 100 }, dragable: true, message: document.getElementById("iframeMessage"), zIndex: 10002 });
          
             $("#btnOpenElement").click(function () {
                 tt.open();
@@ -24,6 +25,9 @@
 
             $("#Button1").click(function () {
                 tt11.open();
+            });
+            $("#Button2").click(function () {
+                tt12.open();
             });
         }); 
       
@@ -213,6 +217,28 @@
                 <img src=ajax-loader.gif />
                 </div>
                 <input id="Button1" type="button" value="运行" />
+            </div>
+            <div class='example_box'>
+                <h2>
+                    自定义信息Iframe</h2>
+                <p>
+                    局部容器遮罩</p>
+                <pre class="prettyprint lang-html linenums">
+&lt;script type="text/javascript"&gt;
+ function Lazy2() {
+                container.html(lazyTable)
+                var elems = $.map($("textarea", container), function (area) { return area.parentNode; }),
+                lazy = new calvin.ui.calvinlazyload(elems, {
+                container: container[0], mode: "cross",
+                onLoadData: function (elem) {
+                    elem.innerHTML = elem.getElementsByTagName("textarea")[0].value + (i++);
+                }
+ &lt;/script&gt;
+</pre>
+                <div id="iframeMessage" style=" display:none; height:400px; width:400px; padding:0px; margin:0px;">
+                 <iframe src="dialogIframeContent.html" scrolling="auto"  style="width:100%; height:100%;"></iframe>
+                </div>
+                <input id="Button2" type="button" value="运行" />
             </div>
         </div>
         <div id="mainNav">
