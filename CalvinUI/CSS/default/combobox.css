@@ -1,12 +1,101 @@
-.combobox-item{
-	padding:2px;
-	font-size:12px;
-	padding:3px;
-	padding-right:0px;
+﻿
+
+.ui-autocomplete {
+    position: absolute;
+    cursor: default;
+    font-family: Verdana,Arial,sans-serif /*{ffDefault}*/;
+    padding: 5px 0;
+    font-size: 12px /*{fsDefault}*/;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
 }
-.combobox-item-hover{
-	background:#fafafa;
+/* workarounds */
+* html .ui-autocomplete {
+    width: 1px;
 }
-.combobox-item-selected{
-	background:#FBEC88;
+/* without this, the menu expands to 100% in IE6 */
+
+.ui-menu {
+    list-style: none;
+    margin: 0;
+    display: block;
+}
+
+    .ui-menu .ui-menu {
+        margin-top: -3px;
+    }
+
+    .ui-menu .ui-menu-item {
+        margin: 0;
+        padding: 0;
+        zoom: 1;
+        float: left;
+        clear: left;
+        width: 99%;
+    }
+
+    .ui-menu .ui-menu-itemHover {
+        color: #ffffff;
+        text-decoration: none;
+        outline: 0;
+        background-color: #0081c2;
+        background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+        background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+        background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+        background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+        background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+        background-repeat: repeat-x;
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+    }
+
+        .ui-menu-item a, .ui-menu .ui-menu-itemHover a {
+            text-decoration: none;
+            display: block;
+            padding: .2em .4em;
+            line-height: 20px;
+            zoom: 1;
+        }
+
+.combo {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #A4BED4;
+    background: #fff;
+}
+
+.combo-text {
+    font-size: 12px;
+    border: 0px;
+    line-height: 20px;
+    height: 20px;
+    padding: 0px;
+    *height: 18px;
+    *line-height: 18px;
+    _height: 18px;
+    _line-height: 18px;
+}
+
+.combo-arrow {
+    background: #E0ECF9 url('images/combo_arrow.gif') no-repeat 3px 4px;
+    width: 18px;
+    height: 20px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+    opacity: 0.6;
+    filter: alpha(opacity=60);
 }
