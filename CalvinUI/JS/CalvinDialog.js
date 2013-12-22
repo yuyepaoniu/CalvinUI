@@ -53,13 +53,18 @@ calvin.Create("calvin.ui", function () {
                 }
             }
             $.data(this.elem, "calvindialog", { options: options, ie6: ie6, full: full, container: this.elem });
-            // DialogHelper.createMask(this.elem);
+            DialogHelper.createMask(this.elem);
+            //返回同期id
             var id = DialogHelper.wrapDialog(this.elem);
             DialogHelper.setDialogStyle(this.elem);
             if (!options.autoShow) {
                 this.close();
             }
-            $(id).CalvinDraggable({ containment: window, handle: "div.Dialog_title" });
+            if (options.showTitle) {
+                if (options.dragable) {
+                    $(id).CalvinDraggable({ containment: this.elem, handle: "div.Dialog_title" });
+                }
+            }
         },
         close: function () {
             DialogHelper.close(this.elem);
@@ -92,11 +97,10 @@ calvin.Create("calvin.ui", function () {
             $dialog = $("<div id='calvinDialog" + id + "' class='calvinDialog' style='display:block;position:" + (dialogData.full ? 'fixed' : 'absolute') + ";z-index:" + (opts.zIndex + 2) + ";margin: 0px;'></div>"),
             dialogContent = $('<div class="Dialog_content"></div>'),
             message = opts.message;
-            $(elem).append($dialog);
+            $(opts.globalAppend ? opts.globalAppend : elem).append($dialog);
             $dialog.append(dialogContent);
             $dialog.css(opts.dialogCSS);
             if (opts.showTitle) {
-                var dialogid = "#Dialog_title" + id;
                 var dialogTitle = $('<div class="Dialog_title" id=\"Dialog_title' + id + '" style="cursor: move;"><h4 style="float:left;display:inline-block;margin:0;">' + opts.title + '</h4></div>');
                 if (opts.showClose) {
                     var closeBtn = $('<a href="javascript:void(0)" title="关闭窗口" class="close_btn" id="calvinCloseBtn' + id + '">×</a>');
@@ -106,25 +110,15 @@ calvin.Create("calvin.ui", function () {
                     dialogTitle.prepend(closeBtn);
                 }
                 dialogContent.append(dialogTitle);
-                if (opts.dragable) {
-                    //$("#calvinDialog" + id).CalvinDraggable({ handle: $(dialogid) });
-                    //new calvin.ui.cavindrag($dialog[0], { containment: window, handle: "div.Dialog_title" });
-                }
                 dialogContent.append("<div class='line'/>");
             }
-            //if (!!message && message.nodeType && message.nodeName) {
-            //    //dialogContent.append(message);
-            //    $(message).show();
-
-            //}
-            //else {
-            var dialogMessage = $('<div class="Dialog_message"></div>').append(message);
+            //消息体
+            var dialogMessage = $('<div class="Dialog_message"></div>').append($(message));
             dialogContent.append(dialogMessage);
             dialogMessage.css(opts.messageCSS);
-            // }
             if (opts.showFooter) {
                 dialogContent.append("<div class='line'/>");
-                var dialogFooter = $('<div class="Dialog_footer">' + opts.footer + '</div>');
+                var dialogFooter = $('<div class="Dialog_footer"></div>').append($(opts.footer));
                 dialogContent.append(dialogFooter);
             }
 
@@ -148,9 +142,8 @@ calvin.Create("calvin.ui", function () {
             //IE6的话 可以采用setExpression来居中消息   其他的可以采用fiexed属性来居中
             if (calvin.ie6() && full) {
                 $dialog.css("position", 'absolute');
-                $dialog.get(0).style.top = "1000px";
-                //$dialog.get(0).style.setExpression('top', '(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (document.documentElement.scrollTop||document.body.scrollTop) + "px"');
-                //$dialog.get(0).style.setExpression('left', '(document.documentElement.clientWidth || document.body.clientWidth) / 2 - (this.offsetWidth / 2) + (document.documentElement.scrollLeft||document.body.scrollLeft) + "px"');
+                $dialog[0].style.setExpression('top', '(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (document.documentElement.scrollTop||document.body.scrollTop) + "px"');
+                $dialog[0].style.setExpression('left', '(document.documentElement.clientWidth || document.body.clientWidth) / 2 - (this.offsetWidth / 2) + (document.documentElement.scrollLeft||document.body.scrollLeft) + "px"');
 
             }
             else if (full) {
