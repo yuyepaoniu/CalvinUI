@@ -27,7 +27,8 @@
             ajaxOption: $.ajaxSettings,
             styleInfo:null,
             AutoInput: true,
-            MenuHideAuto: true
+            MenuHideAuto: true,
+            OptimizationAjax: true//是否优化ajax请求
         };
         var styleHelper = {
             SetItemHover: function ($item) {
@@ -55,6 +56,8 @@
                 return styleInfo
             }
         };
+
+        var cacheData = { "key": "", "data": [] };
         var MenuItemHelper = {
             GenrateMenuItems: function (textBox, height, width, top, left) {
                 var opts = $.data(textBox, 'CalvinAutoComplete.data').options;
@@ -68,6 +71,17 @@
                     params = $.param($.extend({ "key": key }, opts.ajaxOption.data));
                 }
                 if (opts.dynamicSource) {
+                    if (opts.OptimizationAjax)
+                    {
+                        if (key.length > cacheData.key.length && key.indexOf(cacheData.key) > 0)
+                        {
+                            opts.source = cacheData.data;
+                            var $items = MenuItemHelper._GenrateMenuItems(textBox, otherHelper.FilterOptionSouces(opts, textBox.value), height, width, top, left);
+                            $loading.hide();
+                            return $items
+                        }
+
+                    }
                     var xmlhttp = $.ajax({
                         type: opts.ajaxOption.type,
                         url: opts.ajaxOption.url,
@@ -76,6 +90,12 @@
                         data: params,
                         success: function (data) {
                             opts.source = data.length ? data : data.d;
+                            //优化ajax请求
+                            if (opts.OptimizationAjax)
+                            {
+                                cacheData.key = key;
+                                cacheData.data = opts.source;
+                            }
                             var $items = MenuItemHelper._GenrateMenuItems(textBox, otherHelper.FilterOptionSouces(opts, textBox.value), height, width, top, left);
                             $loading.hide();
                             return $items
