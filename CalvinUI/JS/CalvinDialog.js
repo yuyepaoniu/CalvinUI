@@ -36,7 +36,7 @@ calvin.Create("calvin.ui", function () {
     };
     this.dialog = calvin.Class({
         init: function (elem, options) {
-            var full, ie6 = calvin.ie6(), options = $.extend(true, Defaults, options);
+            var full, ie6 = calvin.ie6(), options = $.extend({}, Defaults, options);
             if (calvin.BodyOrHtmlOrWindow(elem)) {
                 this.elem = /body/i.test(elem.nodeName) ? elem : (elem.body || elem.document.body);
                 full = true; //window或者document为true
@@ -84,7 +84,7 @@ calvin.Create("calvin.ui", function () {
             this.mask.resize();
         },
         setDialogCss: function (css) {
-            this.opts.dialogCSS = css;
+            this.options.dialogCSS = css;
             this.$dialog.css(css);
             DialogHelper.setDialogStyle(this);
         }
