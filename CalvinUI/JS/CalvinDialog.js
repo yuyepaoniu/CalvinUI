@@ -196,7 +196,9 @@ calvin.Create("calvin.ui", function () {
         center: function (el, x, y) {
             if (!x && !y) return;
             var p = el.parentNode, s = el.style;
+            p = /body/i.test(p.nodeName) ? (document.documentElement || document.body) : p;
             var $p = $(p);
+
             var borderAndPaddingWidth, borderAndPaddingHeight;
             var $ele = $(el);
             if ($.support.boxModel) {

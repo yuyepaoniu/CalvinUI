@@ -161,8 +161,13 @@
 
     }
     calvin.ie6 = function () {
-        return $.browser.msie && $.browser.version == 6.0;
-    };
-
+        if ((window.ActiveXObject || "ActiveXObject" in window)) {
+            var ie = navigator.userAgent.match(/MSIE ([\d.]+)/)[1]
+            if (ie == 6.0) {
+                return true;
+            };
+        }
+        return false;
+    }
 
 })();
