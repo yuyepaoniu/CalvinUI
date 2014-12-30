@@ -27,6 +27,7 @@ calvin.Create("calvin.ui", function () {
     this.bottomload = calvin.Class(
     {
         init: function (options) {
+            this.stop = false; //是否停止滚动
             this.opts = $.extend({}, defaults, options);
             this.page = 1;
             this.loaded = true;
@@ -37,15 +38,20 @@ calvin.Create("calvin.ui", function () {
         },
         setLoadedState: function (state) {
             this.loaded = state;
+        },
+        stopScroll: function () {
+            this.stop = true;
+
         }
     });
     this.bottomload.prototype.onScroll = function () {
+        if (this.stop) return;
         var scrollheight = ScrollHelper.getScrollRect(this.opts.container).height,
              scrollTop = $(this.opts.container).scrollTop(),
              height = ScrollHelper.getVisiableRect(this.opts.container).height,
              LoadRadius = this.opts.LoadRadius, _this = this;
         if ((scrollTop + height - scrollheight) >= LoadRadius || (scrollTop + height - scrollheight) >= -LoadRadius) {
-            ++this.page;
+
             if (this.loaded) {
                 //同步加载
                 this.setLoadedState(false);
@@ -55,7 +61,8 @@ calvin.Create("calvin.ui", function () {
                     this.setLoadedState(true);
                 }
                 else {
-                    var ajaxOptions = $.extend({}, this.opts.ajaxOption, {
+                    var data = $.extend({ page: this.page }, this.opts.ajaxOption.data);
+                    var ajaxOptions = $.extend({}, this.opts.ajaxOption, { data: data,
                         onTimeout: function () {
                             _this.opts.LoadError.call(_this, xhr, status, "请求超时");
                             _this.setLoadedState(true);
@@ -63,6 +70,7 @@ calvin.Create("calvin.ui", function () {
                         success: function (data, status, xhr) {
                             _this.opts.LoadData.call(_this, data);
                             _this.setLoadedState(true);
+                            ++_this.page;
                         },
                         error: function (xhr, status, error) {
                             _this.opts.LoadError.call(_this, xhr, status, error);

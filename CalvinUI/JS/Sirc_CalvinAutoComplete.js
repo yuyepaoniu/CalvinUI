@@ -83,8 +83,6 @@
                         return null;
                     }
                 });
-
-
             }
             else {
                 var $items = MenuItemHelper._GenrateMenuItems(textBox, otherHelper.FilterOptionSouces(opts, textBox.value), height, width, top, left);
