@@ -20,8 +20,9 @@ $.widget("calvinUI.panel", {
     options: {
         noheader: false, //是否显示头
         title: "<span>&nbsp;&nbsp;</span>",
-        width: 'auto',
-        height: 'auto',
+        bodyCss: {},
+        width: 800,
+        height: 500,
         left: null,
         top: null,
         border: true,
@@ -38,14 +39,10 @@ $.widget("calvinUI.panel", {
         minimizable: false,
         maximizable: false,
         closable: false,
-
-
         collapsed: false,
         minimized: false, //定义在初始化的时候最小化面板
         maximized: false,
         closed: false, //定义在初始化的时候关闭面板
-
-
         onBeforeOpen: function () { },
         onOpen: function () { },
         onBeforeClose: function () { },
@@ -60,21 +57,15 @@ $.widget("calvinUI.panel", {
         onBeforeExpand: function () { },
         onCollapse: function () { },
         onExpand: function () { },
-        animate: true
+        animate: true,
+        zindex: 1
     },
     _create: function () {
 
-        var $this = this.element;
-        var width = $this.width();
-        var height = $this.height();
-
-
-
-
-
+        var $this = this;
         this._formPanel();
         this._formHeader();
-        
+
 
         //data.header = $header;
         //            if (opts.draggable) {
@@ -88,18 +79,46 @@ $.widget("calvinUI.panel", {
         *防止多次调用 宽度逐渐缩小*/
 
 
-        this.setNormalStyle();
+        this._initStyle();
         this.setInitalState();
 
-        //if (this.options.draggable && $.ui && $.ui.draggable) {
-            //this.panel.draggable({ containment: this.options.container, handle: this.header, cursor: "move" });
-        //}
+        if (this.options.draggable && $.ui && $.ui.draggable) {
+            this.panel.draggable({ iframeFix: true, containment: this.options.container, handle: this.header, cursor: "move" });
+        }
         if (this.options.resizeable && $.ui && $.ui.resizable) {
-            this.panel.resizable();
+            this.panel.resizable({ start: function (event, ui) {
+                //修正iframe内容拖拉不流畅
+                $(">iframe", $this.body).each(function () {
+                    $("<div class='ui-resizable-iframeFix' style='background: #fff;'></div>")
+            .css({
+                width: this.offsetWidth + "px", height: this.offsetHeight + "px",
+                position: "absolute", opacity: "0.001", zIndex: 10000
+            })
+            .css($(this).offset())
+            .appendTo("body");
+                });
+
+            }, resize: function () {
+                var params = {};
+                params.height = $this.panel.height();
+                params.width = $this.panel.width();
+                $this.setSizeByParams(params);
+
+            }, stop: function () {
+                var params = {};
+                params.height = $this.panel.height();
+                params.width = $this.panel.width();
+                $this.setSizeByParams(params);
+                //修正iframe内容拖拉不流畅
+                $("div.ui-resizable-iframeFix").each(function () {
+                    this.parentNode.removeChild(this);
+                });
+
+            }
+            });
         }
 
     },
-
     closePanel: function (forceClose) {
         var $panel = this.panel;
         var opts = this.options;
@@ -171,47 +190,39 @@ $.widget("calvinUI.panel", {
         opts.closed = false;
         opts.onOpen.call(target);
     },
-    setNormalStyle: function () {
-        var target = this.element[0];
-        var width = this.element.width();
-        var height = this.element.height();
+    _initStyle: function () {
         var panel = this.panel;
-        //$.data(target, 'panel').originalStyle.height = height;
-        //$.data(target, 'panel').originalStyle.width = width;
+        var width = this.options.width == "auto" ? this.element.width() : this.options.width;
+        var height = this.options.height == "auto" ? this.element.height() : this.options.height;
+        this.panel.css({ width: width, height: height, left: this.options.left, top: this.options.top });
         var pheader = panel.find('>div.panel-header');
         var pbody = panel.find('>div.panel-body');
         panel.width(width - (panel.outerWidth() - panel.width()));
-
         pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
         pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
+        pbody.height(panel.height() - pheader.outerHeight() - (pbody.outerHeight() - pbody.height()));
+        this._refreshStyle();
 
     },
     setMaxsizeStyle: function () {
+        //目前暂时全部父容器都是body
         var opts = this.options;
         var panel = this.panel;
         var tool = panel.find('>div.panel-header .panel-tool-max');
-
         if (tool.hasClass('panel-tool-restore')) return;
-
         tool.addClass('panel-tool-restore');
-        var parent = panel.parent();
-        if (parent.css("position") == "satic") {
-            panel.css({ left: "0px", top: "0px" });
-        }
-        else {
-            var position = parent.position();
-            panel.css({ left: position.left + "px", top: position.top + "px" });
-        }
+        var documentHeight = document.documentElement.clientHeight || document.body.clientHeight,
+        documentWidth = document.documentElement.clientWidth || document.body.clientWidth;
         var pheader = panel.find('>div.panel-header');
         var pbody = panel.find('>div.panel-body');
+        this._refreshStyle();
+        panel.css({ left: "0px", top: "0px" })
         /* 2012 6月4号修正*/
-        panel.width(parent.innerWidth());
-        // panel.width(parent.width() - (panel.outerWidth() - panel.width()));
+        panel.width(documentWidth);
         pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
         pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
         /* 2012 6月4号修正*/
-        panel.height(parent.innerHeight());
-        // panel.height(parent.height() - (panel.outerHeight() - panel.height()));
+        panel.height(documentHeight);
         pbody.height(panel.height() - pheader.outerHeight() - (pbody.outerHeight() - pbody.height()));
         opts.minimized = false;
         opts.maximized = true;
@@ -220,24 +231,22 @@ $.widget("calvinUI.panel", {
     },
     setRestroreStyle: function () {
         var target = this.element[0];
-        var opts = $.data(target, 'panel').options;
-        var panel = $.data(target, 'panel').panel;
+        var opts = this.options;
+        var panel = this.panel;
         var tool = panel.find('>div.panel-header .panel-tool-max');
 
         if (!tool.hasClass('panel-tool-restore')) return;
 
         panel.show();
         tool.removeClass('panel-tool-restore');
-        var panel = $.data(target, 'panel').panel;
-        var height = $.data(target, 'panel').originalStyle.height;
-        var width = $.data(target, 'panel').originalStyle.width;
-        var pheader = panel.find('>div.panel-header');
-        var pbody = panel.find('>div.panel-body');
-        panel.width(width - (panel.outerWidth() - panel.width()));
+
+        var pheader = panel.find('>div.panel-header'),
+         pbody = panel.find('>div.panel-body');
+        panel.css(this.lastStyle);
         pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
         pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
-        pbody.height(height);
-        panel.height(pheader.outerHeight() + pbody.outerHeight());
+        pbody.height(panel.height() - pheader.outerHeight() - (pbody.outerHeight() - pbody.height()));
+
 
     },
     /*
@@ -250,7 +259,6 @@ $.widget("calvinUI.panel", {
         var pheader = panel.find('>div.panel-header');
         var pbody = panel.find('>div.panel-body');
 
-
         if (params) {
             if (params.width) opts.width = params.width;
             if (params.height) opts.height = params.height;
@@ -260,14 +268,14 @@ $.widget("calvinUI.panel", {
 
 
 
-        panel.css({
-            left: opts.left,
-            top: opts.top
-        });
+        //        panel.css({
+        //            left: opts.left,
+        //            top: opts.top
+        //        });
 
-        panel.addClass(opts.cls);
-        pheader.addClass(opts.headerCls);
-        pbody.addClass(opts.bodyCls);
+        //        panel.addClass(opts.cls);
+        //        pheader.addClass(opts.headerCls);
+        //        pbody.addClass(opts.bodyCls);
 
         if (!isNaN(opts.width)) {
             //                    if ($.support.boxModel == true) {
@@ -318,12 +326,16 @@ $.widget("calvinUI.panel", {
             eventHelper.closePanel(target);
         }
     },
+    setzindex: function (index) {
+
+        this.panel.css({ "z-index": index });
+    },
     _formPanel: function () {
 
-        this.panel = this.element.addClass('panel-body').wrap('<div class="panel"></div>').parent();
-
-        //$panel.addClass(opts.cls);
-        //return $panel;
+        this.body = this.element.addClass('panel-body').wrap('<div class="panel"></div>');
+        this.body.css(this.options.bodyCss);
+        this.panel = this.body.parent();
+        this.panel.css({ "z-index": this.options.zindex });
     },
     /**
     * @description 构造pannelheader对象
@@ -335,30 +347,46 @@ $.widget("calvinUI.panel", {
         var opts = this.options;
         if (!opts.noheader) {
             var $header = $('<div class="panel-header"><div class="panel-title">' + opts.title + '</div></div>').prependTo(panel);
+            this.header = $header;
             var $tool = $('<div class="panel-tool"></div>').appendTo($header);
             if (opts.closable) {
                 var closeTool = $('<div class="panel-tool-close"></div>').appendTo($tool);
                 this._on(closeTool, { click: function () {
-
+                    this.closePanel();
                 }
                 });
-                //$('<div class="panel-tool-close"></div>').appendTo($tool).bind('click', { panelTarget: target }, eventHelper.onClose);
+
             }
             if (opts.maximizable) {
 
-                var maxTool = $('<div class="panel-tool-max"></div>').appendTo($tool);
-                this._on(maxTool, { click: function () { } });
-                //$('<div class="panel-tool-max"></div>').appendTo($tool).bind('click', { panelTarget: target }, eventHelper.onMaxAndRestore);
+                this.maxTool = $('<div class="panel-tool-max"></div>').appendTo($tool);
+                this._on(this.maxTool, { click: function () {
+                    if (this.maxTool.hasClass('panel-tool-restore')) {
+                        this.setRestroreStyle();
+                    } else {
+                        this.setMaxsizeStyle();
+                    }
+                    return false;
+                }
+                });
+
             }
             if (opts.minimizable) {
                 var minTool = $('<div class="panel-tool-min"></div>').appendTo($tool);
                 this._on(minTool, { click: function () { } });
-                //$('<div class="panel-tool-min"></div>').appendTo($tool).bind('click', onMin);
             }
             if (opts.collapsible) {
-                var collapseTool = $('<div class="panel-tool-collapse"></div>').appendTo($tool);
-                this._on(collapseTool, { click: function () { } });
-                //$('<div class="panel-tool-collapse"></div>').appendTo($tool).bind('click', { panelTarget: target }, eventHelper.onCollapseAndExpend);
+                this.collapseTool = $('<div class="panel-tool-collapse"></div>').appendTo($tool);
+                this._on(this.collapseTool, { click: function () {
+                    if (this.collapseTool.hasClass('panel-tool-expand')) {
+                        this.expandPanel();
+                    } else {
+                        this.collapsePanel();
+                    }
+                    //event.stopPropagation();
+
+                }
+                });
             }
             if (opts.tools) {
                 for (var i = opts.tools.length - 1; i >= 0; i--) {
@@ -376,514 +404,19 @@ $.widget("calvinUI.panel", {
             this.header = $header;
         }
         return null;
+    },
+    _refreshStyle: function () {
+        this.lastStyle = {
+
+            left: this.panel.css("left"),
+            top: this.panel.css("top"),
+            width: this.panel.width(),
+            height: this.panel.height()
+        };
+
+
+
+
     }
 
 });
-(function () {
-    $.fn.CalvinPanel = function (options, params) {
-        var opts;
-
-        var defaults = {
-            noheader: false, //是否显示头
-            title: "<span>&nbsp;&nbsp;</span>",
-            width: 'auto',
-            height: 'auto',
-            left: null,
-            top: null,
-            border: true,
-            //自定义工具
-            tools: [],
-            //是够可以改变大小
-            resizeable: false,
-            //是否可以拖拉
-            draggable: false,
-
-            collapsible: false,
-            //定义是否显示最小化按钮
-            minimizable: false,
-            maximizable: false,
-            closable: false,
-
-
-            collapsed: false,
-            minimized: false, //定义在初始化的时候最小化面板
-            maximized: false,
-            closed: false, //定义在初始化的时候关闭面板
-
-
-            onBeforeOpen: function () { },
-            onOpen: function () { },
-            onBeforeClose: function () { },
-            onClose: function () { },
-            onBeforeDestroy: function () { },
-            onDestroy: function () { },
-            onResize: function (width, height) { },
-            onMaximize: function () { },
-            onRestore: function () { },
-            onMinimize: function () { },
-            onBeforeCollapse: function () { },
-            onBeforeExpand: function () { },
-            onCollapse: function () { },
-            onExpand: function () { },
-            animate: true
-        };
-        var reSizeAndDraggable = {
-            setDraggable: function (target) {
-                var data = $.data(target, 'panel');
-                var $panel = data.panel;
-                //  var dragHandle = $("div.panel-header", $panel);
-                $panel.CalvinDraggable({ handle: "div.panel-header", containment: $panel.get(0).parentNode });
-
-            },
-            setResizeable: function (target) {
-                var data = $.data(target, 'panel');
-                var $panel = data.panel;
-                var $parent = $panel.parent();
-                var maxWidth = $parent.width();
-                var maxHeight = $parent.height();
-                $panel.CalvinResizable({ maxWidth: maxWidth, maxHeight: maxHeight, onResize: function () {
-                    var params = {};
-                    params.height = $panel.height();
-                    params.width = $panel.width();
-                    otherHelper.setSizeByParams(target, params);
-
-                }, onStopResize: function () {
-                    var params = {};
-                    params.height = $panel.height();
-                    params.width = $panel.width();
-                    otherHelper.setSizeByParams(target, params);
-
-                }
-                });
-            }
-
-        };
-        var htmlHelper = {
-
-            /**
-            * @description 包裹target形成panner
-            * @param {target} 目标元素
-            * @returns 包裹后的jq对象
-            */
-            formPanel: function (target) {
-                var $target = $(target);
-
-                var $panel = $(target).addClass('panel-body').wrap('<div class="panel"></div>').parent();
-
-                $panel.addClass(opts.cls);
-                return $panel;
-            },
-            //销毁已有的panel
-            destroy: function (target) {
-
-                var $target = $(target);
-                var panel = $.data(target, "panel").panel;
-
-                var orginTarget = $.data(target, "panel").originInfo.obj;
-                var orginParentNode = target.parentNode.parentNode;
-                $.removeData(target, "panel");
-                panel.remove();
-                orginParentNode.appendChild(orginTarget);
-            }
-        }
-
-        var headerHelper =
-        {
-            /**
-            * @description 构造pannelheader对象
-            * @param {target} 目标元素
-            * @returns header的jq对象
-            */
-            formHeader: function (target) {
-                var panel = $.data(target, 'panel').panel;
-                var opts = $.data(target, 'panel').options;
-                if (!opts.noheader) {
-                    var $header = $('<div class="panel-header"><div class="panel-title">' + opts.title + '</div></div>').prependTo(panel);
-                    var $tool = $('<div class="panel-tool"></div>').appendTo($header);
-                    if (opts.closable) {
-                        $('<div class="panel-tool-close"></div>').appendTo($tool).bind('click', { panelTarget: target }, eventHelper.onClose);
-                    }
-                    if (opts.maximizable) {
-                        $('<div class="panel-tool-max"></div>').appendTo($tool).bind('click', { panelTarget: target }, eventHelper.onMaxAndRestore);
-                    }
-                    if (opts.minimizable) {
-                        $('<div class="panel-tool-min"></div>').appendTo($tool).bind('click', onMin);
-                    }
-                    if (opts.collapsible) {
-                        $('<div class="panel-tool-collapse"></div>').appendTo($tool).bind('click', { panelTarget: target }, eventHelper.onCollapseAndExpend);
-                    }
-                    if (opts.tools) {
-                        for (var i = opts.tools.length - 1; i >= 0; i--) {
-                            var t = $('<div></div>').addClass(opts.tools[i].iconCls).appendTo($tool);
-                            if (opts.tools[i].handler) {
-                                t.bind('click', eval(opts.tools[i].handler));
-                            }
-                        }
-                    }
-                    $tool.find('div').hover(function () {
-                        $(this).addClass('panel-tool-over');
-                    }, function () {
-                        $(this).removeClass('panel-tool-over');
-                    });
-                    return $header;
-                }
-                return null;
-            }
-
-        }
-
-        var eventHelper = {
-            /**
-            * @description 关闭面板
-            */
-            onClose: function (event) {
-                eventHelper.closePanel(event.data.panelTarget, false);
-                event.stopPropagation();
-            },
-            closePanel: function (target, forceClose) {
-                var $panel = $.data(target, "panel").panel;
-                var opts = $.data(target, "panel").options;
-                if (forceClose != true) {
-                    if (opts.onBeforeClose.call(target) == false) return;
-                }
-                $panel.hide();
-                opts.closed = true;
-                opts.onClose.call(target);
-
-            },
-            /**
-            * @description 缩起面板或者展开面板
-            */
-            onCollapseAndExpend: function (event) {
-                var paneltarget = event.data.panelTarget;
-                if ($(this).hasClass('panel-tool-expand')) {
-                    eventHelper.expandPanel(paneltarget, opts.animate);
-                } else {
-                    eventHelper.collapsePanel(paneltarget, opts.animate);
-                }
-                event.stopPropagation();
-            },
-            collapsePanel: function (target, animate) {
-                var opts = $.data(target, "panel").options;
-                var panel = $.data(target, 'panel').panel;
-                var body = panel.find('>div.panel-body');
-                var tool = panel.find('>div.panel-header .panel-tool-collapse');
-
-                if (tool.hasClass('panel-tool-expand')) return;
-
-                body.stop(true, true); // stop animation
-                if (opts.onBeforeCollapse.call(target) == false) return;
-
-                tool.addClass('panel-tool-expand');
-                if (animate) {
-                    body.slideUp('normal', function () {
-                        opts.collapsed = true;
-                        opts.onCollapse.call(target);
-                    });
-                }
-                else {
-                    body.hide();
-                    opts.collapsed = true;
-                    opts.onCollapse.call(target);
-                }
-            },
-            expandPanel: function (target, animate) {
-                var opts = $.data(target, "panel").options;
-                var panel = $.data(target, 'panel').panel;
-                var body = panel.find('>div.panel-body');
-                var tool = panel.find('>div.panel-header .panel-tool-collapse');
-
-                if (!tool.hasClass('panel-tool-expand')) return;
-
-                body.stop(true, true); // stop animation
-                if (opts.onBeforeExpand.call(target) == false) return;
-
-                tool.removeClass('panel-tool-expand');
-                if (animate) {
-                    body.slideDown('normal', function () {
-                        opts.collapsed = false;
-                        opts.onExpand.call(target);
-                    });
-                }
-                else {
-                    body.show();
-                    opts.collapsed = false;
-                    opts.onExpand.call(target);
-                }
-
-            },
-            /**
-            * @description 重新打开面包
-            */
-            onOpen: function (event) {
-                eventHelper.closePanel(event.data.panelTarget, false);
-                event.stopPropagation();
-            },
-            openPanel: function (target, forceOpen) {
-                var opts = $.data(target, "panel").options;
-                var $panel = $.data(target, "panel").panel;
-                if (forceOpen != true) {
-                    if (opts.onBeforeOpen.call(target) == false) return;
-                }
-                $panel.show();
-                opts.closed = false;
-                opts.onOpen.call(target);
-            },
-            onMaxAndRestore: function (event) {
-                var paneltarget = event.data.panelTarget;
-                if ($(this).hasClass('panel-tool-restore')) {
-                    eventHelper.restorePanel(paneltarget);
-                } else {
-                    eventHelper.maximizePanel(paneltarget);
-                }
-                return false;
-            },
-            maximizePanel: function (target) {
-                otherHelper.setMaxsizeStyle(target);
-            },
-            restorePanel: function (target) {
-                otherHelper.setRestroreStyle(target);
-            }
-        }
-
-        var otherHelper = {
-            setNormalStyle: function (target) {
-                var $target = $(target);
-                var width = $target.width();
-                var height = $target.height();
-                var panel = $.data(target, 'panel').panel;
-                $.data(target, 'panel').originalStyle.height = height;
-                $.data(target, 'panel').originalStyle.width = width;
-                var pheader = panel.find('>div.panel-header');
-                var pbody = panel.find('>div.panel-body');
-                panel.width(width - (panel.outerWidth() - panel.width()));
-
-                pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
-                pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
-
-            },
-            setMaxsizeStyle: function (target) {
-                var opts = $.data(target, 'panel').options;
-                var panel = $.data(target, 'panel').panel;
-                var tool = panel.find('>div.panel-header .panel-tool-max');
-
-                if (tool.hasClass('panel-tool-restore')) return;
-
-                tool.addClass('panel-tool-restore');
-                var parent = panel.parent();
-                if (parent.css("position") == "satic") {
-                    panel.css({ left: "0px", top: "0px" });
-                }
-                else {
-                    var position = parent.position();
-                    panel.css({ left: position.left + "px", top: position.top + "px" });
-                }
-                var pheader = panel.find('>div.panel-header');
-                var pbody = panel.find('>div.panel-body');
-                /* 2012 6月4号修正*/
-                panel.width(parent.innerWidth());
-                // panel.width(parent.width() - (panel.outerWidth() - panel.width()));
-                pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
-                pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
-                /* 2012 6月4号修正*/
-                panel.height(parent.innerHeight());
-                // panel.height(parent.height() - (panel.outerHeight() - panel.height()));
-                pbody.height(panel.height() - pheader.outerHeight() - (pbody.outerHeight() - pbody.height()));
-                opts.minimized = false;
-                opts.maximized = true;
-                opts.onMaximize.call(target);
-
-            },
-            setRestroreStyle: function (target) {
-                var $target = $(target);
-                var opts = $.data(target, 'panel').options;
-                var panel = $.data(target, 'panel').panel;
-                var tool = panel.find('>div.panel-header .panel-tool-max');
-
-                if (!tool.hasClass('panel-tool-restore')) return;
-
-                panel.show();
-                tool.removeClass('panel-tool-restore');
-                var panel = $.data(target, 'panel').panel;
-                var height = $.data(target, 'panel').originalStyle.height;
-                var width = $.data(target, 'panel').originalStyle.width;
-                var pheader = panel.find('>div.panel-header');
-                var pbody = panel.find('>div.panel-body');
-                panel.width(width - (panel.outerWidth() - panel.width()));
-                pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
-                pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
-                pbody.height(height);
-                panel.height(pheader.outerHeight() + pbody.outerHeight());
-
-            },
-            /*
-            * 根据参数重新设置宽度和高度
-            */
-            setSizeByParams: function (target, params) {
-                var $target = $(target);
-                var data = $.data(target, "panel");
-                var opts = data.options;
-                var panel = data.panel;
-                var pheader = panel.find('>div.panel-header');
-                var pbody = panel.find('>div.panel-body');
-
-
-                if (params) {
-                    if (params.width) opts.width = params.width;
-                    if (params.height) opts.height = params.height;
-                    if (params.left != null) opts.left = params.left;
-                    if (params.top != null) opts.top = params.top;
-                }
-
-
-
-                panel.css({
-                    left: opts.left,
-                    top: opts.top
-                });
-
-                panel.addClass(opts.cls);
-                pheader.addClass(opts.headerCls);
-                pbody.addClass(opts.bodyCls);
-
-                if (!isNaN(opts.width)) {
-                    //                    if ($.support.boxModel == true) {
-                    panel.width(opts.width - (panel.outerWidth() - panel.width()));
-                    pheader.width(panel.width() - (pheader.outerWidth() - pheader.width()));
-                    pbody.width(panel.width() - (pbody.outerWidth() - pbody.width()));
-                    //                    } else {
-                    //                        panel.width(opts.width);
-                    //                        pheader.width(panel.width());
-                    //                        pbody.width(panel.width());
-                    //                    }
-                } else {
-                    panel.width('auto');
-                    pbody.width('auto');
-                }
-                if (!isNaN(opts.height)) {
-                    // if ($.boxModel == true) {
-                    panel.height(opts.height - (panel.outerHeight() - panel.height()));
-                    pbody.height(panel.height() - pheader.outerHeight() - (pbody.outerHeight() - pbody.height()));
-                    //                    } else {
-                    //                        panel.height(opts.height);
-                    //                        pbody.height(panel.height() - pheader.outerHeight());
-                    //                    }
-                } else {
-                    pbody.height('auto');
-                }
-                panel.css('height', null);
-
-                opts.onResize.apply(target, [opts.width, opts.height]);
-            },
-            /*
-            * 设置初始化状态 比如是最大化 最小化 展开
-            */
-            setInitalState: function (target, options) {
-                if (opts.maximized == true) {
-                    eventHelper.maximizePanel(target);
-                }
-                if (opts.minimized == true) {
-                    eventHelper.minimizePanel(target);
-
-                }
-                if (opts.collapsed == true) {
-                    eventHelper.collapsePanel(target);
-                }
-
-                if (opts.closed == true) {
-                    eventHelper.closePanel(target);
-                }
-            }
-        }
-
-        if (typeof options === "string") {
-            //没有初始化之前直接调用.CalvinPanel("open"); 要先初始化下
-            if (!this.data("panel")) {
-                $(this.get(0)).CalvinPanel();
-            }
-            switch (options.toUpperCase()) {
-
-                case 'OPTIONS':
-                    return $.data(this.get(0), 'panel').options;
-                case 'PANEL':
-                    return $.data(this.get(0), 'panel').panel;
-                case "GETHEADER":
-                    return $.data(this.get(0), 'panel').panel.find('>div.panel-header');
-                case "GETBODY":
-                    return $.data(this.get(0), 'panel').panel.find('>div.panel-body');
-                case 'OPEN':
-                    return this.each(function () {
-                        eventHelper.openPanel(this);
-                    });
-                case 'CLOSE':
-                    return this.each(function () {
-                        eventHelper.closePanel(this);
-                    });
-                case "RESIZE":
-                    return this.each(function () {
-                        otherHelper.setSizeByParams(this, params);
-                    });
-                case "COLLAPSE":
-                    return this.each(function () {
-                        if (params) {
-                            return eventHelper.collapsePanel(this, true);
-                        }
-                        else {
-                            return eventHelper.collapsePanel(this);
-                        }
-                    })
-            }
-        }
-
-
-        return this.each(function () {
-
-            var $this = $(this);
-            var width = $this.width();
-            var height = $this.height();
-            var state = $.data(this, 'panel');
-
-            if (state) {
-                // htmlHelper.destroy(this);
-                opts = $.extend(state.options, options);
-                state.options = opts;
-            }
-            else {
-
-                opts = $.extend(defaults, {
-                    width: (parseInt($this.css('width')) || undefined),
-                    height: (parseInt($this.css('height')) || undefined),
-                    left: (parseInt($this.css('left')) || undefined),
-                    top: (parseInt($this.css('top')) || undefined),
-                    title: ($this.attr('title') || "<span>&nbsp;</span>")
-                }, options);
-                $this.data("panel", { width: width, height: height, panel: null, header: null, options: opts, originalStyle: { height: 0, width: 0 }, originInfo: { obj: this} });
-                var data = $this.data("panel");
-                var $pannel = htmlHelper.formPanel(this);
-                data.panel = $pannel;
-                var $header = headerHelper.formHeader(this);
-                data.header = $header;
-                if (opts.draggable) {
-                    reSizeAndDraggable.setDraggable(this);
-                }
-                if (opts.resizeable) {
-                    reSizeAndDraggable.setResizeable(this);
-                }
-            }
-            /*如果多次调用calvinPanel的话 因为target被JS重新设置宽度 采用把target的原始宽度缓存起来 
-            *防止多次调用 宽度逐渐缩小*/
-            var data = $.data(this, "panel");
-            if (data) {
-
-                $this.height(data.height);
-                $this.width(data.width);
-
-            }
-
-            otherHelper.setNormalStyle(this);
-            otherHelper.setInitalState(this);
-        });
-
-    }
-
-})();

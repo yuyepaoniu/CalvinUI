@@ -1,0 +1,162 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <link href="CSS/DeskTop.css" rel="stylesheet" type="text/css"/>
+    <link href="../CalvinUI/CSS/default/icons.css" rel="stylesheet" type="text/css" />
+    <link href="../CalvinUI/CSS/default/panel.css" rel="stylesheet" type="text/css" />
+    <link href="../CalvinUI/CSS/default/resizable.css" rel="stylesheet" type="text/css" />
+    <script src="../CalvinUI/JS/jquery.min.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/core.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/widget.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/mouse.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/draggable.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/resizable.js" type="text/javascript"></script>
+    <script src="../CalvinUIV1/CalvinPanel.js" type="text/javascript"></script>
+    <link href="../CalvinUI/CSS/default/resizable.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+        function setTB() {
+            $("#taskBTNs").width($("body").innerWidth() - $("#start").outerWidth(true) - $("#quickStart").innerWidth() - $(".roll").innerWidth() * 2);
+        }
+        function setSC() {
+            var n = Math.floor(($("body").innerHeight() - 47) / 145);
+            for (i = 1; i < $("#shortCut li").length; i++) {
+                $("#shortCut li:eq(" + i + ")").animate({ left: 111 * Math.floor(i / n) });
+                if (i < n) {
+                    $("#shortCut li:eq(" + i + ")").animate({ top: 145 * i });
+                }
+                else {
+                    $("#shortCut li:eq(" + i + ")").animate({ top: 145 * (i - Math.floor(i / n) * n) });
+                }
+            }
+        }
+        $(document).ready(function (e) {
+            setTB();
+            setSC();
+        });
+        $(window).resize(function (e) {
+            setTB();
+            setSC();
+        });
+    </script>
+    <style type="text/css">
+        html, body
+        {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body style="background: url(Images/wallpaper/default.jpg) no-repeat;">
+    <ul id="shortCut">
+        <li id="name1"><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_1.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li id="name2"><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_2.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_3.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_4.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_5.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_6.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_7.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_8.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_9.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_15.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_16.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_17.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_18.png" alt="" />
+            <span>快捷方式</span> </a></li>
+        <li><a href="javascript:void(0);" title="快捷方式">
+            <img src="Images/icon_19.png" alt="" />
+            <span>快捷方式</span> </a></li>
+    </ul>
+    <div id="taskBar" class="BGx24">
+        <div id="start" class="BG24">
+            <a href="javascript:void(0);" class="BG24" title="开始菜单"></a>
+        </div>
+        <ul id="quickStart">
+            <li><a href="javascript:void(0);" title="待办事项">
+                <img src="Images/deskTop/todo-list.png" alt="" /></a></li>
+        </ul>
+        <ul class="roll" style="float: left;">
+            <li class="sinistrad"><a href="javascript:void(0);" class="BG24">
+                <img src="Images/arrow_S13.png" alt="" /></a></li>
+            <li class="rightwards"><a href="javascript:void(0);" class="BG24">
+                <img src="Images/arrow_S12.png" alt="" /></a></li>
+        </ul>
+        <ul class="roll" style="float: right;">
+            <li class="sinistrad"><a href="javascript:void(0);" class="BG24">
+                <img src="Images/arrow_S13.png" alt="" /></a></li>
+            <li class="rightwards"><a href="javascript:void(0);" class="BG24">
+                <img src="Images/arrow_S12.png" alt="" /></a></li>
+        </ul>
+        <div id="taskBTNs">
+            <dl>
+             <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+              <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+               <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                 <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                  <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                   <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                    <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
+                <dt class="current"><a href="javascript:void(0);" class="BG24" title="当前进程">当前进程</a></dt>
+            </dl>
+        </div>
+    </div>
+    <script type="text/javascript">
+        /*开始菜单按钮点击*/
+        $("#start a").click(function (e) {
+            $(this).css("animation", "CW 1s");
+            $(this).css("-webkit-animation", "CW 1s");
+            $(this).focus();
+        });
+        $("#start a").blur(function (e) {
+            $(this).css("animation", "CCW 1s");
+            $(this).css("-webkit-animation", "CCW 1s");
+        });
+        /*任务按钮点击*/
+        $("#taskBTNs dt").click(function (e) {
+            $("#taskBTNs dt").attr("class", "normal");
+            $(this).attr("class", "current");
+        });
+        /*按钮容器*/
+        $("#taskBTNs dl").width(197 * $("#taskBTNs dt").length);
+        /*菜单滚动*/
+        var iWidth = $("#taskBTNs a:first").innerWidth(); //滚动步长
+        var sWidth = $("#taskBTNs dl").innerWidth();
+        $(".roll .sinistrad").click(function () {
+            if (sWidth > $("#taskBTNs").innerWidth() & $("#taskBTNs dl").position().left > $("#taskBTNs").innerWidth() - sWidth) {
+                $("#taskBTNs dl").animate({ left: $("#taskBTNs dl").position().left - iWidth });
+            }
+        });
+        $(".roll .rightwards").click(function () {
+            if (sWidth > $("#taskBTNs").innerWidth() & $("#taskBTNs dl").position().left < 0) {
+                $("#taskBTNs dl").animate({ left: $("#taskBTNs dl").position().left + iWidth });
+            }
+        });
+    </script>
+</body>
+</html>
