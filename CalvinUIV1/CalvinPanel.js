@@ -373,7 +373,11 @@ $.widget("calvinUI.panel", {
             }
             if (opts.minimizable) {
                 var minTool = $('<div class="panel-tool-min"></div>').appendTo($tool);
-                this._on(minTool, { click: function () { } });
+                this._on(minTool, { click: function () {
+                    this.panel.hide();
+                    this.options.onMinimize.call(this);
+                }
+                });
             }
             if (opts.collapsible) {
                 this.collapseTool = $('<div class="panel-tool-collapse"></div>').appendTo($tool);

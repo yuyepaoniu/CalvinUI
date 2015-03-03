@@ -16,7 +16,7 @@
     <link href="../CalvinUI/CSS/default/resizable.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript">
         function setTB() {
-            $("#taskBTNs").width($("body").innerWidth() - $("#start").outerWidth(true) - $("#quickStart").innerWidth() - $(".roll").innerWidth() * 2);
+            //$("#taskBTNs").width($("body").innerWidth() - $("#start").outerWidth(true) - $("#quickStart").innerWidth() - $(".roll").innerWidth() * 2);
         }
         function setSC() {
             var n = Math.floor(($("body").innerHeight() - 47) / 145);
@@ -112,17 +112,7 @@
                 <img src="Images/arrow_S12.png" alt="" /></a></li>
         </ul>
         <div id="taskBTNs">
-            <dl>
-             <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-              <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-               <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                 <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                  <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                   <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                    <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                <dt class="normal"><a href="javascript:void(0);" class="BG24" title="开启进程">开启进程</a></dt>
-                <dt class="current"><a href="javascript:void(0);" class="BG24" title="当前进程">当前进程</a></dt>
+            <dl id="tasklist_bar" >
             </dl>
         </div>
     </div> 
@@ -144,7 +134,7 @@
             $(this).attr("class", "current");
         });
         /*按钮容器*/
-        $("#taskBTNs dl").width(197 * $("#taskBTNs dt").length);
+        //$("#taskBTNs dl").width(197 * $("#taskBTNs dt").length);
         /*菜单滚动*/
         var iWidth = $("#taskBTNs a:first").innerWidth(); //滚动步长
         var sWidth = $("#taskBTNs dl").innerWidth();
@@ -159,21 +149,30 @@
             }
         });
         var _windowmanage;
+        var _taskbar;
         $(function () {
             _windowmanage = new windowmanage();
+            _taskbar = new $.calvinUI.taskbar({ ontaskclick: function (id) {
+                _windowmanage.openwindow({ windowid: id });
+                _windowmanage.setWindowTop(id);
+
+            }
+            }, $("#tasklist_bar"));
             $("#name1").click(function () {
                 _windowmanage.openwindow({ windowid: "121", content: "<iframe scrolling='auto' src='HTMLPage.htm' style='height: 100%; width: 100%;' frameborder='0'></iframe>"
 
                 });
-
                 _windowmanage.setWindowTop(121);
+                _taskbar.addtask("121", "快捷方式1");
             });
             $("#name2").click(function () {
-                _windowmanage.openwindow({ windowid: "122", content: "<iframe scrolling='auto' src='HTMLPage2.htm' style='height: 100%; width: 100%;' frameborder='0'></iframe>"
+                _windowmanage.openwindow({ windowid: "122", content: "<iframe scrolling='auto' src='HTMLPage2.htm' style='height: 100%; width: 100%;' frameborder='0'></iframe>",
+                    onMinimize: function () {
 
+                    }
                 });
                 _windowmanage.setWindowTop(122);
-
+                _taskbar.addtask("122", "快捷方式2");
             });
 
         });
