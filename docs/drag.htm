@@ -4,14 +4,16 @@
     <title></title>
     <link href="../asset/css/style.css" rel="stylesheet" type="text/css" />
     <script src="../CalvinUI/JS/jquery.min.js" type="text/javascript"></script>
-    <script src="../CalvinUI/JS/CalvinUI.Core.js" type="text/javascript"></script>
-    <script src="../CalvinUI/JS/CalvinDraggable.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/core.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/widget.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/mouse.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/draggable.js" type="text/javascript"></script>
     <script src="../asset/prettyCode/prettify.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(function () {
-            $("#drag_basic").CalvinDraggable();
-            $("#drag_container").CalvinDraggable({ containment: document.getElementById("dragContainer") });
-            $("#drag_proxy").CalvinDraggable({ proxy: true });
+            $("#drag_basic").draggable();
+            $("#drag_container").draggable({ containment: document.getElementById("dragContainer") });
+            //$("#drag_proxy").CalvinDraggable({ proxy: true });
         });
     
     </script>
@@ -163,8 +165,8 @@ $("#drag_basic").CalvinDraggable();
   $("#drag_container").CalvinDraggable({ containment: document.getElementById("dragContainer") });
  &lt;/script&gt;
 </pre>
-                <div style="width: 600px; height: 200px; border: 1px solid #ccc;" id='dragContainer'>
-                    <div style="background: #028fc4; height: 60px; width: 60px;" id="drag_container">
+                <div style="width: 600px; height: 200px; border: 1px solid #ccc; position:relative; top:50px;" id='dragContainer'>
+                    <div style="background: #028fc4; height: 60px; width: 60px; position:relative; top:20px; left:50px;" id="drag_container">
                     </div>
                 </div>
             </div>

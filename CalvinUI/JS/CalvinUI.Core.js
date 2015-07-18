@@ -162,10 +162,15 @@
     }
     calvin.ie6 = function () {
         if ((window.ActiveXObject || "ActiveXObject" in window)) {
-            var ie = navigator.userAgent.match(/MSIE ([\d.]+)/)[1]
-            if (ie == 6.0) {
-                return true;
-            };
+            var versions = navigator.userAgent.match(/MSIE ([\d.]+)/);
+            if (versions != null && versions.length == 2) {
+                var ie = versions[1];
+                if (ie == 6.0) {
+                    return true;
+                };
+                return false;
+            }
+            return false;
         }
         return false;
     }

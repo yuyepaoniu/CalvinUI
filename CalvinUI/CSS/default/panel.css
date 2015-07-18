@@ -1,6 +1,7 @@
 .panel{
-	overflow:hidden;
+	overflow:visible;
 	font-size:12px;
+	position: absolute;
 }
 .panel-header{
 	padding:5px;

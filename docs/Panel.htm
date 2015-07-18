@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="../CalvinUI/CSS/default/icons.css" rel="stylesheet" type="text/css" />
+    <link href="../CalvinUI/CSS/default/panel.css" rel="stylesheet" type="text/css" />
+    <link href="../CalvinUI/CSS/default/resizable.css" rel="stylesheet" type="text/css" />
+    <script src="../CalvinUI/JS/jquery.min.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/core.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/widget.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/mouse.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/draggable.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/jqueryUI/resizable.js" type="text/javascript"></script>
+    <script src="../CalvinUIV1/CalvinPanel.js" type="text/javascript"></script>
+    <link href="../CalvinUI/CSS/default/resizable.css" rel="stylesheet" type="text/css" />
+    <style>
+        html, body
+        {
+            padding: 0px;
+            margin: 0px;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //alert(document.getElementById("p").style.height + "   " + $("#p").height());
+            $("#p").panel({ minimizable: true, draggable: true, resizeable: true, collapsible: true, closable: true, maximizable: true });
+            $("#p2").panel({ minimizable: true, draggable: true, resizeable: true, collapsible: true, closable: true, maximizable: true, bodyCss: { overflow: "hidden", backgroundColor: "#FFF"} });
+            //   $("#p").CalvinPanel({ collapsible: true, maximizable: true,closable:true,closed:true });
+            // $("#p").CalvinPanel({ collapsible: true, maximizable: true });    
+            // $("#p").CalvinPanel({ collapsible: true, maximizable: true });
+            $("#Button1").click(function () {
+                $("#p").CalvinPanel("open");
+            })
+            $("#Button2").click(function () {
+                $("#p").CalvinPanel("close");
+            })
+        })
+    </script>
+</head>
+<body>
+    <input id="Button1" type="button" value="button" />
+    <input id="Button2" type="button" value="button" />
+    <div id="p" style="width: 500px; height: 200px; padding: 10px;">
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+        <p>
+            sfsasf</p>
+    </div>
+    <div id="p2" style="width: 500px; height: 200px;">
+        <iframe scrolling="auto" src="dialogIframeContent.html" style="height: 100%; width: 100%;"></iframe>
+    </div>
+</body>
+</html>

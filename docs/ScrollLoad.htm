@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="../CalvinUI/JS/jquery.min.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/CalvinUI.Core.js" type="text/javascript"></script>
+    <script src="../CalvinUI/JS/CalvinBottomLoad.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var waitingContent = $("<li>加载中...........</li>");
+            var mm = new calvin.ui.bottomload({ container: window,
+                onReach: function () {
+                    $("#Ul1").append(waitingContent);
+                },
+                LoadData: function (data) {
+                    if (mm.page == 3) { mm.stopScroll(); }
+                    $("#Ul1").append(data);
+                    $(waitingContent).remove();
+                },
+                ajaxRequest: true,
+                ajaxOption: { url: "bottomloaded.ashx", type: "post", data: { "name": "xuzhiwei" }, contentType: "application/json" }
+            });
+
+        });
+       
+    </script>
+</head>
+<body>
+    <ul id="Ul1">
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+        <li>fsafsafasfsafsaaaaafasssssssssssssssssssssssssssssssssssaaaaaa</li>
+    </ul>
+</body>
+</html>
